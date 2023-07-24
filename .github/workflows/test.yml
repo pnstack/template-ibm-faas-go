@@ -21,6 +21,10 @@ jobs:
       - name: Change to Terraform Directory
         run: |
           cd terraform
+          
+      - name: List Terraform Directory
+        run: |
+          ls -la
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
