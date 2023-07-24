@@ -16,10 +16,10 @@ func Main(obj map[string]interface{}) map[string]interface{} {
 	if !ok {
 		name = "world"
 	}
-	fmt.Println("Hello, " + name + "!")
-	log.Debug().Str("name", name).Msg("Hello")
+	fmt.Println("Love, " + name + "!")
+	log.Debug().Str("name", name).Msg("Love")
 	msg := make(map[string]interface{})
-	msg["body"] = "Hello, " + name + "!"
+	msg["body"] = "Love, " + name + "!"
 	msg["statusCode"] = 200
 	msg["headers"] = map[string]string{"Content-Type": "text/plain"}
 	return msg
