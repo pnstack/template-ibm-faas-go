@@ -46,7 +46,7 @@ jobs:
         id: plan
         working-directory: ./terraform
         run: |
-          terraform plan -out=tfplan -var api_key=${{ secrets.IBM_CLOUD_API_KEY }} namespace=${{ secrets.IBM_FAAS_NAMESPACE }}
+          terraform plan -var api_key=${{ secrets.IBM_CLOUD_API_KEY }} namespace=${{ secrets.IBM_FAAS_NAMESPACE }}
 
       # - name: Terraform Apply
       #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
