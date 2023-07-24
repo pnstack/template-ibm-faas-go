@@ -3,7 +3,7 @@ name: Test Terraform Deployment
 on:
   push:
     branches:
-      - develop  # Adjust this to match your main branch name
+      - master  # Adjust this to match your main branch name
 
 jobs:
   deploy:
@@ -47,16 +47,10 @@ jobs:
         working-directory: ./terraform
         run: |
           terraform plan -var api_key=${{ secrets.IBM_CLOUD_API_KEY }} -var namespace=${{ secrets.IBM_FAAS_NAMESPACE }}
+      
+      - name: Terraform apply
+        id: apply
+        working-directory: ./terraform
+        run: |
+          terraform apply -var api_key=${{ secrets.IBM_CLOUD_API_KEY }} -var namespace=${{ secrets.IBM_FAAS_NAMESPACE }}
 
-      # - name: Terraform Apply
-      #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      #   run: terraform apply tfplan
-      #   env:
-      #     IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}  # Add the secret containing your IBM Cloud API key
-
-      # - name: Clean Up
-      #   if: always()
-      #   run: |
-      #     rm -f tfplan
-      #     rm -f src.zip
-      #     rm -f ./function
