@@ -52,5 +52,5 @@ jobs:
         id: apply
         working-directory: ./terraform
         run: |
-          terraform apply -var api_key=${{ secrets.IBM_CLOUD_API_KEY }} -var namespace=${{ secrets.IBM_FAAS_NAMESPACE }}
+          terraform apply -var api_key=${{ secrets.IBM_CLOUD_API_KEY }} -var namespace=${{ secrets.IBM_FAAS_NAMESPACE }} -auto-approve
 
