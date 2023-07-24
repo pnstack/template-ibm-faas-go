@@ -1,0 +1,53 @@
+name: Test Terraform Deployment
+
+on:
+  push:
+    branches:
+      - develop  # Adjust this to match your main branch name
+
+jobs:
+  deploy:
+    name: Deploy with Terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Zip Source Code
+        run: |
+          cd src && zip -r ../src.zip . && cd ..
+      
+      - name: Change to Terraform Directory
+        run: |
+          cd terraform
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.3.9" 
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -out=tfplan -var api_key=${{IBM_CLOUD_API_KEY}} namespace=${{IBM_FAAS_NAMESPACE}}
+
+      # - name: Terraform Apply
+      #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      #   run: terraform apply tfplan
+      #   env:
+      #     IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}  # Add the secret containing your IBM Cloud API key
+
+      # - name: Clean Up
+      #   if: always()
+      #   run: |
+      #     rm -f tfplan
+      #     rm -f src.zip
+      #     rm -f ./function
