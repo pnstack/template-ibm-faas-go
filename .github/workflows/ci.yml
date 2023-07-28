@@ -1,17 +1,18 @@
-name: Test Terraform Deployment
+name: CI Pipeline
 
 on:
   push:
     branches:
-      - develop  # Adjust this to match your main branch name
+      - develop
+      - master
 
 jobs:
   deploy:
-    name: Deploy with Terraform
+    name: CI Pipeline
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: CI Pipeline
         uses: actions/checkout@v3
 
       - name: Zip Source Code
@@ -47,16 +48,11 @@ jobs:
         working-directory: ./terraform
         run: |
           terraform plan -var api_key=${{ secrets.IBM_CLOUD_API_KEY }} -var namespace=${{ secrets.IBM_FAAS_NAMESPACE }}
+      
+      - name: Terraform apply
+        if: github.ref == 'refs/heads/master'
+        id: apply
+        working-directory: ./terraform
+        run: |
+          terraform apply -var api_key=${{ secrets.IBM_CLOUD_API_KEY }} -var namespace=${{ secrets.IBM_FAAS_NAMESPACE }} -auto-approve
 
-      # - name: Terraform Apply
-      #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      #   run: terraform apply tfplan
-      #   env:
-      #     IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}  # Add the secret containing your IBM Cloud API key
-
-      # - name: Clean Up
-      #   if: always()
-      #   run: |
-      #     rm -f tfplan
-      #     rm -f src.zip
-      #     rm -f ./function
