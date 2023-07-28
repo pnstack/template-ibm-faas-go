@@ -6,10 +6,6 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func init() {
-	zerolog.TimeFieldFormat = ""
-}
-
 // Main function for the action
 func Main(obj map[string]interface{}) map[string]interface{} {
 	name, ok := obj["name"].(string)
